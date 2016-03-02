@@ -30,4 +30,6 @@ merged = pd.merge(no_drug_df, drug_df, on='ptid', how='inner', suffixes=('_ND', 
 
 merged.to_csv('alldata.csv', sep="\t", index=False, quoting=csv.QUOTE_NONE)
 
+trainval = merged[['seq_ND','seq_D']]
+trainval.to_csv('trainval.csv', index=False)
 
