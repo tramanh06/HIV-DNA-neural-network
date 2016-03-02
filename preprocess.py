@@ -1,9 +1,6 @@
 __author__ = 'TramAnh'
 
-import csv
+# Split trainvaltest.csv into trainval.csv and test.csv
 
-with open('trainval.csv', 'rb') as csvfile:
-    reader = csv.reader(csvfile, delimiter="\t")
-    for row in reader:
 
 

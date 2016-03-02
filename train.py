@@ -9,12 +9,6 @@ from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure import SigmoidLayer
 
-trainval_file = 'trainval.csv'
-output_model_file = 'model.pkl'
-MAXLENGTH = 297
-
-hidden_size = 10
-epochs = 600
 
 def encoding(seq):
     splitted = ()
@@ -41,10 +35,11 @@ def encode_char(x):
     elif x=='g':
         return 4
     else:
-        print '%s invalid ' % (x)
         return None
 
 # load data
+
+MAXLENGTH = 297
 
 def load_data(filename):
     x_data = []
@@ -62,38 +57,47 @@ def load_data(filename):
 
     return np.array(x_data), np.array(y_data)
 
-x_train, y_train = load_data(trainval_file)
+def train_fn(hiddennodes):
+    trainval_file = 'trainval.csv'
+    output_model_file = 'model.pkl'
 
-input_size = x_train.shape[1]
-target_size = y_train.shape[1]
+    hidden_size = hiddennodes
+    epochs = 600
 
-# Normalize
-x_train = x_train /4.0
-y_train = y_train /4.0
+    x_train, y_train = load_data(trainval_file)
 
-print x_train
-print y_train
+    input_size = x_train.shape[1]
+    target_size = y_train.shape[1]
 
-# prepare dataset
+    # Normalize
+    x_train = x_train /4.0
+    y_train = y_train /4.0
 
-ds = SDS( input_size, target_size )
-ds.setField( 'input', x_train )
-ds.setField( 'target', y_train )
+    # print 'in train.py'
+    # print x_train
+    # print y_train
 
-# init and train
+    # prepare dataset
 
-net = buildNetwork(input_size, hidden_size, target_size, bias = True, hiddenclass=SigmoidLayer,
-                   outclass=SigmoidLayer)
-trainer = BackpropTrainer(net,ds)
+    ds = SDS( input_size, target_size )
+    ds.setField( 'input', x_train )
+    ds.setField( 'target', y_train )
 
-# print "training for {} epochs...".format( epochs )
-#
-# for i in range(epochs):
-#     mse = trainer.train()
-#     rmse = sqrt( mse )
-#     print "training RMSE, epoch {}: {}".format( i + 1, rmse )
+    # init and train
 
-trainer.trainUntilConvergence(verbose = True, validationProportion = 0.15, maxEpochs = 1000, continueEpochs = 10 )
-pickle.dump( net, open( output_model_file, 'wb' ))
+    net = buildNetwork(input_size, hidden_size, target_size, bias = True, hiddenclass=SigmoidLayer,
+                       outclass=SigmoidLayer)
+    trainer = BackpropTrainer(net,ds)
+
+    # print "training for {} epochs...".format( epochs )
+    #
+    # for i in range(epochs):
+    #     mse = trainer.train()
+    #     rmse = sqrt( mse )
+    #     print "training RMSE, epoch {}: {}".format( i + 1, rmse )
+
+    print 'Training..'
+    trainer.trainUntilConvergence(verbose = True, validationProportion = 0.15, maxEpochs = 1000, continueEpochs = 10 )
+    pickle.dump( net, open( output_model_file, 'wb' ))
 
 

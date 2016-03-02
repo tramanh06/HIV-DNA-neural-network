@@ -30,6 +30,16 @@ merged = pd.merge(no_drug_df, drug_df, on='ptid', how='inner', suffixes=('_ND', 
 
 merged.to_csv('alldata.csv', sep="\t", index=False, quoting=csv.QUOTE_NONE)
 
-trainval = merged[['seq_ND','seq_D']]
-trainval.to_csv('trainval.csv', index=False)
+trainvaltest = merged[['seq_ND','seq_D']]
+
+# Split to train and test
+
+num_sample = len(trainvaltest)
+test_ratio = 0.15
+trainval = trainvaltest[:int((1-test_ratio)*num_sample)]
+test = trainvaltest[int((1-test_ratio)*num_sample):]
+
+trainval.to_csv('trainval.csv', index=False, header=False)
+test.to_csv('test.csv', index=False, header=False)
+
 
