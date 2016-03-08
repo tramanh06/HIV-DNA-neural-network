@@ -10,11 +10,12 @@ import matplotlib.pyplot as plt
 
 MAXLENGTH = 297
 test_file = 'test.csv'
-model_file = 'model.pkl'
+
 output_predictions_file = 'predictions.txt'
 
-def test_fn():
+def test_fn(hiddennodes):
     # load model
+    model_file = 'model_{0}_nodes.pkl'.format(str(hiddennodes))
     net = pickle.load( open( model_file, 'rb' ))
     print 'Finish loading model'
 
@@ -42,6 +43,7 @@ def test_fn():
     print 'Activating ds'
     p = net.activateOnDataset( ds )
 
+    print p
     print 'Length of test output p {0}'.format(len(p))
     # mse = MSE( y_test, p )
     # rmse = sqrt( mse )
