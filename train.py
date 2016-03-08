@@ -63,7 +63,7 @@ def load_data(filename):
 
 def train_fn(hiddennodes):
     trainval_file = 'trainval.csv'
-    output_model_file = 'model.pkl'
+    output_model_file = 'model_{0}_nodes.pkl'.format(str(hiddennodes))
 
     hidden_size = hiddennodes
     epochs = 600
