@@ -10,10 +10,10 @@ score=[]
 def mapper(hiddennodes):
     print 'Running hiddennode=%d' %(hiddennodes)
     # train.train_fn(hiddennodes)
-    score_test = test.test_fn(hiddennodes)
+    r_score = test.test_fn(hiddennodes)
     # score.append([hiddennodes, score_test])
-    print 'Hidden nodes= {0}    Score_test= {1}'.format(hiddennodes, score_test)
-    return hiddennodes, score_test
+    print 'Hidden nodes= {0}    Score_test= {1}'.format(hiddennodes, r_score)
+    return hiddennodes, r_score
 
 pool = Pool(8)
 out= pool.map(mapper, range(3,11))

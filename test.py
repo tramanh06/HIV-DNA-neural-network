@@ -4,6 +4,7 @@ from train import load_data
 import numpy as np
 import cPickle as pickle
 from pybrain.datasets.supervised import SupervisedDataSet as SDS
+from scipy.stats.stats import pearsonr
 from sklearn.metrics import mean_squared_error as MSE
 from math import sqrt
 import matplotlib.pyplot as plt
@@ -21,13 +22,7 @@ def test_fn(hiddennodes):
 
     # Load test data
     x_test, y_test = load_data('test.csv')
-    # x_test = x_test /4.0
-    # y_test = y_test /4.0
-
-
     y_test_dummy = np.zeros( y_test.shape )
-    print x_test
-    print y_test
     input_size = x_test.shape[1]
     target_size = y_test.shape[1]
 
@@ -43,26 +38,31 @@ def test_fn(hiddennodes):
     print 'Activating ds'
     p = net.activateOnDataset( ds )
 
-    print p
-    print 'Length of test output p {0}'.format(len(p))
-    # mse = MSE( y_test, p )
-    # rmse = sqrt( mse )
-    #
-    # print "testing RMSE:", rmse
+    r_score = calculate_correlation(y_test, p)
+    plot_histogram(r_score, hiddennodes)
+    return r_score
 
-    # np.savetxt( output_predictions_file, p, fmt = '%.6f' )
+def calculate_correlation(y_test, p):
+    r = []
+    for i in range(len(p)):
+        r_score = pearsonr(y_test[i], p[i])
+        r.append(r_score[0])        # pearsonr returns correlation and 2-tailed p-value. Only need correlation
+    return r
 
-    print 'To debug'
-    similarity_score = compare_ytest_p(y_test, p)
+def plot_histogram(r, hiddennodes):
+    plt.hist(r, bins=20)
+    plt.title("Corellation Histogram for hiddennodes=%s" %hiddennodes)
+    plt.xlabel("R value")
+    plt.ylabel("Frequency")
 
-    return similarity_score
+    plt.show()
 
 def compare_ytest_p(y_test, p):
     # Calculate similarity (in number) between y_test and p
     score = 0
 
     for i, row in enumerate(p):
-        p_decoded = []
+        p_decoded = []      # p_decoded is to store decoded value (decode to 0.25, 0.5,..., 1)
         for each in row:
             decoded_x = decode(each)
             p_decoded.append(decoded_x)
