@@ -6,7 +6,7 @@ import numpy as np
 from multiprocessing import Pool
 import matplotlib.pyplot as plt
 score=[]
-testfile = 'Data/train_cleaned.csv'
+testfile = 'Data/test_cleaned.csv'
 
 def plot_histogram(r, hiddennodes):
     plt.subplot(240+hiddennodes-2)
@@ -27,13 +27,12 @@ plt.figure(1)
 pool = Pool(8)
 out= pool.map(mapper, range(3,11))
 
+bad = set(range(35))
 for i in out:
-    nodes = i[0]
-    plot_histogram(i[1], nodes)
+    r_score = i[1]
+    bad_score = [i for i, x in enumerate(r_score) if x < 0.05]
+    print bad_score
+    bad = bad.intersection(bad_score)
 
-plt.show()
+print 'Bad performance position: {0}'.format(bad)
 
-print 'out= %s' %(out)
-score.append(out)
-
-# np.savetxt('NN_Score.txt', score)
