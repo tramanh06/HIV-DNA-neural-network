@@ -17,6 +17,7 @@ def test_fn(testfile, hiddennodes):
     # load model
     model_file = 'Serialized/model_{0}_nodes.pkl'.format(str(hiddennodes))
     net = pickle.load( open( model_file, 'rb' ))
+
     print 'Finish loading model'
 
     # Load test data
@@ -37,17 +38,21 @@ def test_fn(testfile, hiddennodes):
     print 'Activating ds'
     p = net.activateOnDataset( ds )
 
-    r_score = calculate_correlation(y_test, p)
-    return r_score
+    r_score, top_score = calculate_correlation(y_test, p)
+    return r_score, top_score
 
 def calculate_correlation(y_test, p):
     r = []
+    top_score = []
     for i in range(len(p)):
         r_score = pearsonr(y_test[i], p[i])
+        check_high_perf(i, r_score[0], top_score)
         r.append(r_score[0])        # pearsonr returns correlation and 2-tailed p-value. Only need correlation
-    return r
+    return r, top_score
 
-
+def check_high_perf(i, score, top_score):
+    if score > 0.90:
+        top_score.append(i)
 
 if __name__=='__main__':
     test_fn()
