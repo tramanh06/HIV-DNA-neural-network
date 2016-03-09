@@ -29,11 +29,11 @@ no_drug_df = pd.DataFrame(no_drug_lst, columns=['ptid', 'Drug', 'seq'])
 drug_df = pd.DataFrame(drug_lst, columns=['ptid', 'Drug', 'seq'])
 merged = pd.merge(no_drug_df, drug_df, on='ptid', how='inner', suffixes=('_ND', '_D'))
 
-merged.to_csv('alldata.csv', sep="\t", index=False, quoting=csv.QUOTE_NONE)
+merged.to_csv('Data/alldata.csv', sep="\t", index=False, quoting=csv.QUOTE_NONE)
 
 trainvaltest = merged[['seq_ND','seq_D']]
 
-trainvaltest.to_csv('trainvaltest.csv', index=False, quoting=csv.QUOTE_NONE)
+trainvaltest.to_csv('Data/trainvaltest.csv', index=False, quoting=csv.QUOTE_NONE)
 
 
 

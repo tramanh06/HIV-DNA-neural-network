@@ -2,7 +2,7 @@ __author__ = 'TramAnh'
 
 from train import load_data
 
-infile = 'trainval.csv'
+infile = 'Data/trainval.csv'
 x_data, y_data = load_data(infile)
 
 import numpy as np

@@ -6,7 +6,7 @@ import numpy as np
 from multiprocessing import Pool
 import matplotlib.pyplot as plt
 score=[]
-testfile = 'train_cleaned.csv'
+testfile = 'Data/train_cleaned.csv'
 
 def plot_histogram(r, hiddennodes):
     plt.subplot(240+hiddennodes-2)

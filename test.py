@@ -15,7 +15,7 @@ output_predictions_file = 'predictions.txt'
 
 def test_fn(testfile, hiddennodes):
     # load model
-    model_file = 'model_{0}_nodes.pkl'.format(str(hiddennodes))
+    model_file = 'Serialized/model_{0}_nodes.pkl'.format(str(hiddennodes))
     net = pickle.load( open( model_file, 'rb' ))
     print 'Finish loading model'
 

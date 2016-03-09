@@ -28,12 +28,12 @@ def write_csv(filename, output):
         csvwriter.writerows(output)
 
 if __name__=='__main__':
-    trainval = 'trainval.csv'
-    test = 'test.csv'
+    trainval = 'Data/trainval.csv'
+    test = 'Data/test.csv'
 
     # output filename
-    out_trainval_file = 'trainval_cleaned.csv'
-    out_test_file = 'test_cleaned.csv'
+    out_trainval_file = 'Data/trainval_cleaned.csv'
+    out_test_file = 'Data/test_cleaned.csv'
 
     # array of the cleaned data
     output_trainval = filter(trainval)

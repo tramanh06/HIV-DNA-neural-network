@@ -62,8 +62,8 @@ def load_data(filename):
     return np.array(x_data), np.array(y_data)
 
 def train_fn(hiddennodes):
-    trainval_file = 'trainval.csv'
-    output_model_file = 'model_{0}_nodes.pkl'.format(str(hiddennodes))
+    trainval_file = 'Data/trainval.csv'
+    output_model_file = 'Serialized/model_{0}_nodes.pkl'.format(str(hiddennodes))
 
     hidden_size = hiddennodes
     epochs = 600

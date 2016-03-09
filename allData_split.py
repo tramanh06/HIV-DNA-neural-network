@@ -4,7 +4,7 @@ __author__ = 'TramAnh'
 
 from filter_input_data import filter, write_csv
 
-filename = 'trainvaltest.csv'
+filename = 'Data/trainvaltest.csv'
 
 unseen_ratio = 0.15
 test_ratio = 0.15
@@ -22,8 +22,8 @@ test = trainvaltest[traintest_mark:testunseen_mark]
 unseen = trainvaltest[testunseen_mark:]
 
 'Write to csv'
-write_csv('train_cleaned.csv', train)
-write_csv('test_cleaned.csv', test)
-write_csv('unseen_cleaned.csv', unseen)
+write_csv('Data/train_cleaned.csv', train)
+write_csv('Data/test_cleaned.csv', test)
+write_csv('Data/unseen_cleaned.csv', unseen)
 
 
