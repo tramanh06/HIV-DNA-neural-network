@@ -3,6 +3,7 @@ __author__ = 'TramAnh'
 import pandas as pd
 import numpy as np
 import csv
+import cPickle as pickle
 
 # Read in PR.txt
 f = open('../PR.txt', 'r')
@@ -32,14 +33,7 @@ merged.to_csv('alldata.csv', sep="\t", index=False, quoting=csv.QUOTE_NONE)
 
 trainvaltest = merged[['seq_ND','seq_D']]
 
-# Split to train and test
+trainvaltest.to_csv('trainvaltest.csv', index=False, quoting=csv.QUOTE_NONE)
 
-num_sample = len(trainvaltest)
-test_ratio = 0.15
-trainval = trainvaltest[:int((1-test_ratio)*num_sample)]
-test = trainvaltest[int((1-test_ratio)*num_sample):]
-
-trainval.to_csv('trainval.csv', index=False, header=False)
-test.to_csv('test.csv', index=False, header=False)
 
 
