@@ -34,7 +34,7 @@ for i in out:
     if not top_intersect:
         top_intersect = set(i[2])
     else:
-        top_intersect.intersection(i[2])
+        top_intersect = top_intersect.intersection(i[2])
 
 print "Intersect top results= {0}".format(top_intersect)
 print "Length intersection=%s" %(len(top_intersect))
