@@ -4,7 +4,7 @@ __author__ = 'TramAnh'
 
 import csv
 
-filename = 'Data/alldata.csv'
+filename = 'Data/alldata_DrugSeq_pair.csv'
 
 def filter(filename):
     output_anomaly = []
