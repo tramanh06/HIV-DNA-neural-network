@@ -5,11 +5,9 @@ __author__ = 'TramAnh'
 
 from filter_input_data import filter, write_csv
 
-# def filter_short_seq(data):
-#     for each in data:
-#
+dir = '/wobble_data'
 
-filename = 'Data/trainvaltest.csv'
+filename = 'Data'+dir+'/trainvaltest.csv'
 
 unseen_ratio = 0.15
 test_ratio = 0.15
@@ -28,8 +26,8 @@ test = trainvaltest_filtered[traintest_mark:testunseen_mark]
 unseen = trainvaltest_filtered[testunseen_mark:]
 
 'Write to csv'
-write_csv('Data/train_cleaned.csv', train)
-write_csv('Data/test_cleaned.csv', test)
-write_csv('Data/unseen_cleaned.csv', unseen)
+write_csv('Data'+dir+'/train_cleaned.csv', train)
+write_csv('Data'+dir+'/test_cleaned.csv', test)
+write_csv('Data'+dir+'/unseen_cleaned.csv', unseen)
 
 
