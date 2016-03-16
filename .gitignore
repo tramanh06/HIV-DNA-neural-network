@@ -3,4 +3,5 @@
 *.txt
 *.pyc
 *.pkl
+.idea/
 
