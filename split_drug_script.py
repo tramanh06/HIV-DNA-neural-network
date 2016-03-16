@@ -3,7 +3,7 @@ __author__ = 'TramAnh'
 import csv
 import pandas as pd
 
-infile = 'Data/alldata_DrugSeq_pair.csv'
+infile = 'Data/alldata.csv'
 
 # Read csv
 alldata_df = pd.read_csv(infile, sep="\t")
