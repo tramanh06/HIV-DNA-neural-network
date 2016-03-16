@@ -1,5 +1,12 @@
 __author__ = 'TramAnh'
 
+'''
+Cut data according to alignment from mafft.
+Input is data run from mafft (able to run in command line)
+output is csv file of 2 columns, WildType (or ND) and Mutant (or Drug)
+All data in output are of same length, and aligned
+'''
+
 import csv
 
 infile = 'Data/alignment/fasta_output.txt'
@@ -75,12 +82,6 @@ def get_rcut_position(dict):
 
     return seq_name, rcut
 
-def write_cut_seq(dict, lcut, rcut):
-    with open(alr_cut_file, 'wb') as f:
-        for key in dict:
-            f.write(key+'\n')
-            f.write(dict[key][lcut+1:rcut]+'\n')
-
 def write_arr_to_csv(arr, lcut, rcut):
     with open(csv_file, 'wb') as f:
         csvwriter = csv.writer(f)
@@ -102,10 +103,7 @@ print seq1, l_cut
 print '\nCut right:'
 seq2, r_cut = get_rcut_position(dict)
 print seq2, r_cut
-#
-# write_cut_seq(dict, l_cut, r_cut)
 
 write_arr_to_csv(arr, l_cut, r_cut)
 
 
-# print dict
