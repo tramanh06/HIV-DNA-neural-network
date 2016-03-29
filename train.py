@@ -9,7 +9,7 @@ from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure import SigmoidLayer
 
-MAXLENGTH = 297
+MAXLENGTH = 225
 def encoding(seq):
     splitted = ()
     for each_char in seq:
@@ -28,13 +28,13 @@ def encoding(seq):
 
 def encode_char(x):
     if x=='a':
-        return 0.25
+        return 0.25/2
     elif x=='t':
-        return 0.5
+        return (0.5+0.25)/2
     elif x=='c':
-        return 0.75
+        return (0.75+0.5)/2
     elif x=='g':
-        return 1
+        return (0.75 + 1)/2
     else:
         return None
 
@@ -102,7 +102,7 @@ def train_fn(hiddennodes):
     #     print "training RMSE, epoch {}: {}".format( i + 1, rmse )
 
     print 'Training..'
-    trainer.trainUntilConvergence(verbose = True, validationProportion = 0.15, maxEpochs = 1000, continueEpochs = 10 )
+    trainer.trainUntilConvergence(verbose=True, validationProportion = 0.15, maxEpochs = 1000, continueEpochs = 10 )
 
     print 'Finish training. Serializing model...'
     pickle.dump( net, open( output_model_file, 'wb' ))
