@@ -8,6 +8,7 @@ from scipy.stats.stats import pearsonr
 from sklearn.metrics import mean_squared_error as MSE
 from math import sqrt
 import matplotlib.pyplot as plt
+import csv
 
 MAXLENGTH = 297
 
@@ -15,7 +16,7 @@ output_predictions_file = 'predictions.txt'
 
 def test_fn(testfile, hiddennodes):
     # load model
-    model_file = 'Serialized/model_{0}_nodes.pkl'.format(str(hiddennodes))
+    model_file = '../Serialized/model_{0}_nodes.pkl'.format(str(hiddennodes))
     net = pickle.load( open( model_file, 'rb' ))
     print 'Finish loading model'
 
@@ -37,9 +38,16 @@ def test_fn(testfile, hiddennodes):
     print 'Activating ds'
     p = net.activateOnDataset( ds )
 
-    p_decoded = decode_whole(p)
+    p_decoded, dna_converted = decode_whole(p)
     r_score = calculate_correlation(y_test, p_decoded)
+
+    # Write converted predicted sequence to file
+    with open('../results_log/prediction.csv', 'wb') as f:
+        for item in dna_converted:
+            print>>f, item
+
     return r_score
+
 
 def calculate_correlation(y_test, p):
     r = []
@@ -55,26 +63,33 @@ def decode_whole(p):
     :return: list of threshold values
     '''
     arr = []
+    texts = []
     for seq in p:
-        x = decode_each(seq)
-        arr.append(x)
+        decoded_inlist, decoded_intext = decode_each(seq)
+        arr.append(decoded_inlist)
+        texts.append(decoded_intext)
 
-    return arr
+    return arr, texts
 
 def decode_each(x):
     'param x is a list of numbers'
     # assert (type(x) is float)
     arr = []
+    temp = ''
     for each in x:
         if each <= 0.25:
+            temp += 'a'
             arr.append(0.25/2)
         elif each <= 0.5:
+            temp += 't'
             arr.append((0.25+0.5)/2)
         elif each <= 0.75:
+            temp += 'c'
             arr.append((0.5+0.75)/2)
         else:
+            temp += 'g'
             arr.append((0.75+1)/2)
-    return arr
+    return arr, temp
 
 if __name__=='__main__':
     test_fn()

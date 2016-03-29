@@ -61,15 +61,13 @@ def load_data(filename):
     print 'Finish encoding. Returning np array..'
     return np.array(x_data), np.array(y_data)
 
-def train_fn(hiddennodes):
-    trainval_file = 'Data/trainval.csv'
-    output_model_file = 'Serialized/model_{0}_nodes.pkl'.format(str(hiddennodes))
+def train_fn(trainfile, hiddennodes):
+    output_model_file = '../Serialized/model_{0}_nodes.pkl'.format(str(hiddennodes))
 
     hidden_size = hiddennodes
-    epochs = 600
 
     print 'Loading data..'
-    x_train, y_train = load_data(trainval_file)
+    x_train, y_train = load_data(trainfile)
 
     input_size = x_train.shape[1]
     target_size = y_train.shape[1]
