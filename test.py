@@ -37,7 +37,8 @@ def test_fn(testfile, hiddennodes):
     print 'Activating ds'
     p = net.activateOnDataset( ds )
 
-    r_score = calculate_correlation(y_test, p)
+    p_decoded = decode_whole(p)
+    r_score = calculate_correlation(y_test, p_decoded)
     return r_score
 
 def calculate_correlation(y_test, p):
@@ -47,7 +48,33 @@ def calculate_correlation(y_test, p):
         r.append(r_score[0])        # pearsonr returns correlation and 2-tailed p-value. Only need correlation
     return r
 
+def decode_whole(p):
+    '''
+    Decode from real sequence to threshold sequence
+    :param p: predicted sequence (in list of sequence)
+    :return: list of threshold values
+    '''
+    arr = []
+    for seq in p:
+        x = decode_each(seq)
+        arr.append(x)
 
+    return arr
+
+def decode_each(x):
+    'param x is a list of numbers'
+    # assert (type(x) is float)
+    arr = []
+    for each in x:
+        if each <= 0.25:
+            arr.append(0.25/2)
+        elif each <= 0.5:
+            arr.append((0.25+0.5)/2)
+        elif each <= 0.75:
+            arr.append((0.5+0.75)/2)
+        else:
+            arr.append((0.75+1)/2)
+    return arr
 
 if __name__=='__main__':
     test_fn()
