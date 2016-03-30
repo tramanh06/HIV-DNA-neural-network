@@ -2,7 +2,6 @@ __author__ = 'TramAnh'
 
 ''' Split to train and test '''
 
-
 from filter_input_data import filter, write_csv
 
 dir = '/wobble_data'

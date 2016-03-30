@@ -8,6 +8,7 @@ All data in output are of same length, and aligned
 '''
 
 import csv
+from utils import put_seq_to_array
 
 infile = 'Data/alignment/fasta_output.txt'
 alr_cut_file = 'Data/alignment/fasta_alr_cut.txt'
@@ -26,28 +27,6 @@ def get_sequence(infile, dict):
             else:
                 value += line.strip()   # Concatenate value
 
-def put_seq_to_array(infile):
-    arr = []
-    with open(infile, 'rb') as f:
-        id=''
-        wt_seq = ''
-        m_seq = ''
-        temp = ''
-        for line in f:
-            line = line.strip()
-            if '>' in line:
-                if 'W' in line:
-                    if id:
-                        m_seq = temp
-                        arr.append([wt_seq, m_seq])
-                        temp = ''
-                if 'M' in line:
-                    wt_seq = temp
-                    id = line[1:-1]
-                    temp = ''
-            else:
-                temp += line.strip()
-    return arr
 
 def get_lcut_position(dict):
     half = len(dict)/2
