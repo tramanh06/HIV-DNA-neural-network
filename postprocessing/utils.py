@@ -59,6 +59,13 @@ def confusion_matrix(wt, mt, predicted):
             else:
                 fp_c += 1
 
+    MAXLENGTH = len(wt)
+    tp = tp/float(MAXLENGTH)
+    fn = fn/float(MAXLENGTH)
+    fp_c = fp_c/float(MAXLENGTH)
+    fp_nc = fp_nc/float(MAXLENGTH)
+    tn = tn/float(MAXLENGTH)
+
     matrix = [[tp, fn], [[fp_nc, fp_c], tn]]
 
     return matrix

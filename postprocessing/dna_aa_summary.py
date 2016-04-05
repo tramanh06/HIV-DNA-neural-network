@@ -1,17 +1,15 @@
 from utils import dna_to_aa, confusion_matrix
 import csv
 from Levenshtein import distance
-
-predictfile = '/Users/TramAnh/Dropbox/NTU/BII_Parttime_work/HIV/ForSight Results/3rd_set/set3_converted.txt'       # in DNA
-actualfile = '/Users/TramAnh/Dropbox/NTU/BII_Parttime_work/HIV/ForSight Results/test_aligned.csv'   # WT, MT in DNA
-outfile = '/Users/TramAnh/Dropbox/NTU/BII_Parttime_work/HIV/ForSight Results/3rd_set/summary.csv'
+from os import path
+import os
 
 
 def alert(has_stop):
     if has_stop:
         print 'Stop codon detected'
 
-if __name__== '__main__':
+def summary(predictfile, actualfile, outfile):
     predict_dna = []
     predict_aa = []
     actual_wt_dna = []
@@ -22,6 +20,7 @@ if __name__== '__main__':
     stats_dna = []
     stats_aa = []
 
+    # Distance
     dist_dna = []
     dist_aa = []
 
@@ -69,16 +68,17 @@ if __name__== '__main__':
                                          mt=actual_mt_aa[i],
                                          predicted=predict_aa[i]).__str__())
 
-        dist_dna.append(distance(actual_mt_dna[i].lower(), predict_dna[i].lower()))
-        dist_aa.append(distance(actual_mt_aa[i].lower(), predict_aa[i].lower()))
+        MAXLENGTH = len(actual_mt_dna[i])
+        dist_dna.append(distance(actual_mt_dna[i].lower(), predict_dna[i].lower())/float(MAXLENGTH))
+        dist_aa.append(distance(actual_mt_aa[i].lower(), predict_aa[i].lower())/float(MAXLENGTH))
 
     # Calculate Levenstein distance
 
 
     with open(outfile, 'wb') as f:
         csvwriter = csv.writer(f)
-        headers = ['Wildtype (DNA)', 'Mutant (DNA)', 'Predicted (DNA)', 'ConfMatrix (DNA)', 'Distance (DNA)',
-                   'Wildtype (AA)', 'Mutant (AA)', 'Predicted (AA)', 'ConfMatrix (AA)', 'Distance (AA)']
+        headers = ['Wildtype (DNA)', 'Mutant (DNA)', 'Predicted (DNA)', 'ConfMatrix (DNA)', 'ErrorRate (DNA)',
+                   'Wildtype (AA)', 'Mutant (AA)', 'Predicted (AA)', 'ConfMatrix (AA)', 'ErrorRate (AA)']
         csvwriter.writerow(headers)
 
         num_seq = len(predict_dna)
@@ -86,5 +86,18 @@ if __name__== '__main__':
             row = [actual_wt_dna[i], actual_mt_dna[i], predict_dna[i], stats_dna[i], dist_dna[i],
                    actual_wt_aa[i], actual_mt_aa[i], predict_aa[i], stats_aa[i], dist_aa[i]]
             csvwriter.writerow(row)
+
+if __name__== '__main__':
+    path = '/Users/TramAnh/Dropbox/NTU/BII_Parttime_work/HIV/Summary/'
+    actualfile = path+'test_aligned.csv'    # WT, MT in DNA
+    predictpath = path+'Output_data/'       # in DNA
+    predictfiles = [predictpath+f for f in os.listdir(predictpath)]
+    for predictfile in predictfiles:
+        outfile = predictfile[:-4]+'_summary.csv'
+        print predictfile
+        print actualfile
+        print outfile
+        summary(predictfile, actualfile, outfile)
+
 
 
