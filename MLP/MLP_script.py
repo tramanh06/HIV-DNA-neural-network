@@ -6,14 +6,14 @@ import numpy as np
 from multiprocessing import Pool
 import matplotlib.pyplot as plt
 score=[]
-testfile = '../Data/alignment/test_aligned.csv'
+testfile = '../Data/alignment/train_aligned.csv'
 trainfile = '../Data/alignment/train_aligned.csv'
 
 def plot_histogram(r, hiddennodes):
     plt.subplot(140+hiddennodes-2)
     plt.hist(r, bins=20)
     plt.title("hiddennodes=%s" %hiddennodes)
-    plt.ylim(0,25)
+    # plt.ylim(0,10)
 
 def mapper(hiddennodes):
     print 'Running hiddennode=%d' %(hiddennodes)
@@ -25,15 +25,15 @@ def mapper(hiddennodes):
     return hiddennodes, r_score
 
 # Parallel run
-# plt.figure(1)
-# pool = Pool(4)
-# out= pool.map(mapper, range(3,7))
-#
-# for i in out:
-#     nodes = i[0]
-#     plot_histogram(i[1], nodes)
-#
-# plt.show()
+plt.figure(1)
+pool = Pool(4)
+out= pool.map(mapper, range(3,7))
+
+for i in out:
+    nodes = i[0]
+    plot_histogram(i[1], nodes)
+
+plt.show()
 
 # Single run
-mapper(5)
+# mapper(5)

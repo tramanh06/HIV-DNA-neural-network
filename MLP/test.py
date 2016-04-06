@@ -42,9 +42,9 @@ def test_fn(testfile, hiddennodes):
     r_score = calculate_errorrate(actual_dna, dna_converted)
 
     # Write converted predicted sequence to file
-    # with open('../results_log/prediction.csv', 'wb') as f:
-    #     for item in dna_converted:
-    #         print>>f, item
+    with open('../results_log/prediction.csv', 'wb') as f:
+        for item in dna_converted:
+            print>>f, item
 
     return r_score
 
