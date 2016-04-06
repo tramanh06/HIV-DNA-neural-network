@@ -3,40 +3,38 @@ __author__ = 'TramAnh'
 import numpy as np
 import csv
 import cPickle as pickle
-from math import sqrt
 from pybrain.datasets.supervised import SupervisedDataSet as SDS
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure import SigmoidLayer
 
-MAXLENGTH = 225
 def encoding(seq):
     splitted = ()
     for each_char in seq:
         encoded_char = encode_char(each_char.lower())
         if encoded_char:
-            splitted = splitted + (encoded_char,)
+            splitted = splitted + encoded_char
         else: #return None if one of the character is not ATCG
             return None
 
-    'Padding zeros for sequence thats less than MAXLENGTH'
-    if len(splitted)<MAXLENGTH:
-        padding_length = MAXLENGTH - len(splitted)
-        splitted = splitted + (0,)*padding_length
+    # 'Padding zeros for sequence thats less than MAXLENGTH'
+    # if len(splitted)<MAXLENGTH:
+    #     padding_length = MAXLENGTH - len(splitted)
+    #     splitted = splitted + (0,)*padding_length
 
     return splitted
 
 def encode_char(x):
     if x=='a':
-        return 0.25/2
+        return (1, 0, 0, 0)
     elif x=='t':
-        return (0.5+0.25)/2
+        return (0, 1, 0, 0)
     elif x=='c':
-        return (0.75+0.5)/2
+        return (0, 0, 1, 0)
     elif x=='g':
-        return (0.75 + 1)/2
-    else:
-        return None
+        return (0, 0, 0, 1)
+    elif x=='-':
+        return (0, 0, 0, 0)
 
 # load data
 
@@ -100,7 +98,7 @@ def train_fn(trainfile, hiddennodes):
     #     print "training RMSE, epoch {}: {}".format( i + 1, rmse )
 
     print 'Training..'
-    trainer.trainUntilConvergence(verbose=True, validationProportion = 0.15, maxEpochs = 1000, continueEpochs = 10 )
+    trainer.trainUntilConvergence(validationProportion = 0.15, maxEpochs = 1000, continueEpochs = 10 )
 
     print 'Finish training. Serializing model...'
     pickle.dump( net, open( output_model_file, 'wb' ))
