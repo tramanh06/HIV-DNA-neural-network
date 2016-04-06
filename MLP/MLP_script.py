@@ -10,7 +10,7 @@ testfile = '../Data/alignment/test_aligned.csv'
 trainfile = '../Data/alignment/train_aligned.csv'
 
 def plot_histogram(r, hiddennodes):
-    plt.subplot(240+hiddennodes-2)
+    plt.subplot(140+hiddennodes-2)
     plt.hist(r, bins=20)
     plt.title("hiddennodes=%s" %hiddennodes)
     plt.ylim(0,25)
@@ -24,9 +24,10 @@ def mapper(hiddennodes):
     print 'Hidden nodes= {0}    Score_test= {1}'.format(hiddennodes, r_score)
     return hiddennodes, r_score
 
+# Parallel run
 # plt.figure(1)
-# pool = Pool(8)
-# out= pool.map(mapper, range(3,11))
+# pool = Pool(4)
+# out= pool.map(mapper, range(3,7))
 #
 # for i in out:
 #     nodes = i[0]
@@ -34,10 +35,5 @@ def mapper(hiddennodes):
 #
 # plt.show()
 
-# print 'out= %s' %(out)
-# score.append(out)
-
 # Single run
 mapper(5)
-
-# np.savetxt('NN_Score.txt', score)
