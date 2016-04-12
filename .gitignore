@@ -3,6 +3,7 @@
 *.txt
 *.pyc
 *.pkl
+*.ipynb
 .DS_STORE
 # User-specific stuff:
 .idea/
