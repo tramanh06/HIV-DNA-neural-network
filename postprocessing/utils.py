@@ -33,40 +33,49 @@ def confusion_matrix(wt, mt, predicted):
     '''
 
     if 'stop codon' in predicted:
-        return
+        return [None] * 5
 
     # Make sure same length
     assert(len(wt) == len(mt))
     assert(len(mt) == len(predicted))
 
-    tp, fp_nc, fp_c, tn, fn = [0] * 5
-
+    tp, fp, fn1, fn2, tn= [0] * 5
+    num_change = 0
+    num_nochange = 0
     for i in range(len(wt)):
         w = wt[i].lower()
         m = mt[i].lower()
         p = predicted[i].lower()
 
-        if m == w:
-            if p == w:
-                tp += 1
-            else:
-                fn += 1
-        else:   # case m != w
-            if p == m:  # change correctly
-                tn += 1
+        if m != w:
+            if p == m:
+                tp += 1     # A -> T, predict A -> T
             elif p == w:
-                fp_nc += 1
+                fn1 += 1    # A -> T, predict A -> A
             else:
-                fp_c += 1
+                fn2 += 1    # A -> T, predict A -> G
+            num_change += 1
+        else:   # case m == w
+            if p == m:
+                tn += 1     # A -> A, predict A -> A
+            elif p != m:
+                fp += 1     # A -> A, predict A -> T
+            num_nochange += 1
 
     MAXLENGTH = len(wt)
-    tp = tp/float(MAXLENGTH)
-    fn = fn/float(MAXLENGTH)
-    fp_c = fp_c/float(MAXLENGTH)
-    fp_nc = fp_nc/float(MAXLENGTH)
-    tn = tn/float(MAXLENGTH)
+    try:
+        tp = tp/float(num_change)
+        fn1 = fn1/float(num_change)
+        fn2 = fn2/float(num_change)
+    except ZeroDivisionError:
+        tp, fn1, fn2 = [0] * 3
 
-    matrix = [[tp, fn], [[fp_nc, fp_c], tn]]
+    try:
+        tn = tn/float(num_nochange)
+        fp = fp/float(num_nochange)
+    except ZeroDivisionError:
+        tn, fp = [0] * 2
 
-    return matrix
+
+    return tp, fn1, fn2, tn, fp
 

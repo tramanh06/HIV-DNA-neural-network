@@ -17,8 +17,8 @@ def summary(predictfile, actualfile, outfile):
     actual_mt_dna = []
     actual_mt_aa = []
 
-    stats_dna = []
-    stats_aa = []
+    tp_dna, fn1_dna, fn2_dna, tn_dna, fp_dna = [[] for _ in range(5)]
+    tp_aa, fn1_aa, fn2_aa, tn_aa, fp_aa = [[] for _ in range(5)]
 
     # Distance
     dist_dna = []
@@ -61,12 +61,24 @@ def summary(predictfile, actualfile, outfile):
 
     # Calculate confusion matrix
     for i in range(len(actual_wt_dna)):
-        stats_dna.append(confusion_matrix(wt=actual_wt_dna[i],
+        a, b, c, d, e = confusion_matrix(wt=actual_wt_dna[i],
                                           mt=actual_mt_dna[i],
-                                          predicted=predict_dna[i]).__str__())
-        stats_aa.append(confusion_matrix(wt=actual_wt_aa[i],
-                                         mt=actual_mt_aa[i],
-                                         predicted=predict_aa[i]).__str__())
+                                          predicted=predict_dna[i])
+        tp_dna.append(a)
+        fn1_dna.append(b)
+        fn2_dna.append(c)
+        tn_dna.append(d)
+        fp_dna.append(e)
+
+        try:
+            a,b,c,d,e = confusion_matrix(wt=actual_wt_aa[i], mt=actual_mt_aa[i], predicted=predict_aa[i])
+        except TypeError:
+            print 'debug'
+        tp_aa.append(a)
+        fn1_aa.append(b)
+        fn2_aa.append(c)
+        tn_aa.append(d)
+        fp_aa.append(e)
 
         MAXLENGTH = len(actual_mt_dna[i])
         dist_dna.append(distance(actual_mt_dna[i].lower(), predict_dna[i].lower())/float(MAXLENGTH))
@@ -77,14 +89,20 @@ def summary(predictfile, actualfile, outfile):
 
     with open(outfile, 'wb') as f:
         csvwriter = csv.writer(f)
-        headers = ['Wildtype (DNA)', 'Mutant (DNA)', 'Predicted (DNA)', 'ConfMatrix (DNA)', 'ErrorRate (DNA)',
-                   'Wildtype (AA)', 'Mutant (AA)', 'Predicted (AA)', 'ConfMatrix (AA)', 'ErrorRate (AA)']
+        headers = ['Wildtype (DNA)', 'Mutant (DNA)', 'Predicted (DNA)',
+                   'TP (DNA)', 'FN1 (DNA)', 'FN2 (DNA)', 'TN (DNA)', 'FP (DNA)', 'ErrorRate (DNA)',
+
+                   'Wildtype (AA)', 'Mutant (AA)', 'Predicted (AA)',
+                   'TP (AA)', 'FN1 (AA)', 'FN2 (AA)', 'TN (AA)', 'FP (AA)', 'ErrorRate (AA)']
         csvwriter.writerow(headers)
 
         num_seq = len(predict_dna)
         for i in range(num_seq):
-            row = [actual_wt_dna[i], actual_mt_dna[i], predict_dna[i], stats_dna[i], dist_dna[i],
-                   actual_wt_aa[i], actual_mt_aa[i], predict_aa[i], stats_aa[i], dist_aa[i]]
+            row = [actual_wt_dna[i], actual_mt_dna[i], predict_dna[i],
+                   tp_dna[i], fn1_dna[i], fn2_dna[i], tn_dna[i], fp_dna[i], dist_dna[i],
+
+                   actual_wt_aa[i], actual_mt_aa[i], predict_aa[i],
+                   tp_aa[i], fn1_aa[i], fn2_aa[i], tn_aa[i], fp_aa[i], dist_aa[i]]
             csvwriter.writerow(row)
 
 if __name__== '__main__':
@@ -93,6 +111,8 @@ if __name__== '__main__':
     predictpath = path+'Output_data/'       # in DNA
     predictfiles = [predictpath+f for f in os.listdir(predictpath)]
     for predictfile in predictfiles:
+        if 'DS' in predictfile:
+            continue
         outfile = predictfile[:-4]+'_summary.csv'
         print predictfile
         print actualfile
