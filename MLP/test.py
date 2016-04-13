@@ -61,6 +61,7 @@ def calculate_errorrate(y_test, p):
 def decode_whole(p):
     '''
     Decode from real sequence to threshold sequence
+    aka convert from number to DNA
     :param p: predicted sequence (in list of sequence)
     :return: list of threshold values
     '''
