@@ -22,7 +22,7 @@ class MainModel():
 
         print "debug"
 
-        # self.MutateClassifier.train(arr=mut_arr)
+        self.MutateClassifier.train(arr=mut_arr)
         # self.NomutateClassifier.train(arr=nomut_arr)
 
     def test(self, testfile):

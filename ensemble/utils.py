@@ -5,7 +5,8 @@ from sklearn.preprocessing import scale
 from Levenshtein import distance
 
 # encoder = {'c': -0.5, 't': -0.17, 'a':0.16, 'g':0.50}
-encoder = {'c': 1.0, 't': 2.0, 'a':3.0, 'g':4.0}
+# encoder = {'c': 1.0, 't': 2.0, 'a':3.0, 'g':4.0}
+encoder = {'c': -1.0, 't': -0.5, 'a':0.5, 'g':1.0}
 
 
 def __find_mutations_each(seq1, seq2):
