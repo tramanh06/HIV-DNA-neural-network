@@ -8,6 +8,9 @@ trainvalfile = '../Data/alignment/trainval_uncut.txt'
 trainfile = '../Data/alignment/train_uncut.txt'
 testfile = '../Data/alignment/test_uncut.txt'
 
+''' extract data straight from fasta output.
+    Split data according to train:test ratio
+    and write to file '''
 if __name__=='__main__':
     trainval = put_seq_to_array(infile)
 

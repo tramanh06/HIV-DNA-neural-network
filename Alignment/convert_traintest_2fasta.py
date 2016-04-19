@@ -16,13 +16,14 @@ def write_fasta(outfile, arr):
             f.write('>{0}M\n'.format(i))
             f.write(line[1].strip()+'\n')
 
-trainfile = 'Data/train_cleaned.csv'
-testfile = 'Data/test_cleaned.csv'
-outfile = 'Data/fasta_4alignment.txt'
+# trainfile = 'Data/train_cleaned.csv'
+# testfile = 'Data/test_cleaned.csv'
+file = '../Data/wobble_data/trainvaltest.csv'
+outfile = '../Data/wobble_data/fasta_4alignment.txt'
 
 arr=[]
-get_sequences(trainfile, arr)
-get_sequences(testfile, arr)
+# get_sequences(trainfile, arr)
+get_sequences(file, arr)
 
 write_fasta(outfile, arr)
 

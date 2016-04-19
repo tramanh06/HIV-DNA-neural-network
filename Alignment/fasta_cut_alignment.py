@@ -10,9 +10,8 @@ All data in output are of same length, and aligned
 import csv
 from utils import put_seq_to_array
 
-infile = 'Data/alignment/fasta_output.txt'
-alr_cut_file = 'Data/alignment/fasta_alr_cut.txt'
-csv_file = 'Data/alignment/trainval_aligned.csv'
+infile = '../Data/wobble_data/fasta_output.txt'
+csv_file = '../Data/wobble_data/trainval_aligned.csv'
 
 def get_sequence(infile, dict):
     with open(infile, 'rb') as f:
@@ -29,7 +28,7 @@ def get_sequence(infile, dict):
 
 
 def get_lcut_position(dict):
-    half = len(dict)/2
+    half = len(dict[dict.keys()[0]])/2
 
     max_pos =0
     seq_name = ''
@@ -43,7 +42,7 @@ def get_lcut_position(dict):
     return seq_name, max_pos
 
 def get_rcut_position(dict):
-    half = len(dict)/2
+    half = len(dict[dict.keys()[0]])/2
 
     min_pos = half
     seq_name = ''

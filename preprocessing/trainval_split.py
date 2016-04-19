@@ -2,7 +2,7 @@ __author__ = 'TramAnh'
 
 import csv
 from filter_input_data import write_csv
-infile = 'Data/alignment/trainval_aligned.csv'
+infile = '../Data/wobble_data/trainval_aligned.csv'
 
 def load_data(infile):
     arr = []
@@ -23,5 +23,5 @@ train = trainval[:trainval_mark]
 test = trainval[trainval_mark:]
 
 'Write to csv'
-write_csv('Data/alignment/train_aligned.csv', train)
-write_csv('Data/alignment/test_aligned.csv', test)
+write_csv('../Data/wobble_data/train_aligned.csv', train)
+write_csv('../Data/wobble_data/test_aligned.csv', test)

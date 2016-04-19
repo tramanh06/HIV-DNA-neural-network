@@ -4,17 +4,17 @@ import csv
 import random
 
 wobble_base = {}
-wobble_base['b']= ('c', 'g', 't')
-wobble_base['d']= ('a', 'g', 't')
-wobble_base['h']= ('a', 'c', 't')
-wobble_base['k']= ('g', 't')
-wobble_base['m']= ('a', 'c')
-wobble_base['n']= ('a', 'c', 't', 'g')
-wobble_base['r']= ('a', 'g')
-wobble_base['s']= ('g', 'c')
-wobble_base['v']= ('a', 'c', 'g')
-wobble_base['w']= ('a', 't')
-wobble_base['y']= ('c', 't')
+wobble_base['b']= ('t') #('c', 'g', 't')       # t
+wobble_base['d']= ('g') #('a', 'g', 't')       # g
+wobble_base['h']= ('c') #('a', 'c', 't')       # c
+wobble_base['k']= ('t') #('g', 't')            # t
+wobble_base['m']= ('c') #('a', 'c')            # c
+wobble_base['n']= ('t') #('a', 'c', 't', 'g')  # t
+wobble_base['r']= ('a') #('a', 'g')            # a
+wobble_base['s']= ('g') #('g', 'c')            # g
+wobble_base['v']= ('a') #('a', 'c', 'g')       # a
+wobble_base['w']= ('a') #('a', 't')            # a
+wobble_base['y']= ('c') #('c', 't')            # c
 
 valid = ('a', 'c', 't', 'g')
 
@@ -27,10 +27,10 @@ def convert(sequence):
         else:
             new = random.choice(wobble_base[char])
             temp += new
-            print 'convert %s to %s' %(char, new)
+            # print 'convert %s to %s' %(char, new)
     return temp
 
-with open('Data/trainvaltest.csv','rb') as f:
+with open('../Data/trainvaltest.csv','rb') as f:
     arr = []
     csvreader = csv.reader(f)
     for line in csvreader:
@@ -41,7 +41,7 @@ with open('Data/trainvaltest.csv','rb') as f:
         arr.append([string1, string2])
 
 # write to file
-with open('Data/wobble_data/trainvaltest.csv', 'wb') as writef:
+with open('../Data/wobble_data/trainvaltest.csv', 'wb') as writef:
     csvwriter = csv.writer(writef)
     csvwriter.writerows(arr)
 
