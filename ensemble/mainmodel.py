@@ -3,6 +3,7 @@ __author__ = 'TramAnh'
 import csv
 from submodel import SubModel
 from utils import find_mutation_pos
+from utils import calculate_accuracy
 
 class MainModel():
 
@@ -12,50 +13,66 @@ class MainModel():
         self.NomutateClassifier = SubModel(hiddennodes=self.hiddennodes, type='nomutate')
 
     def train(self, trainfile):
-        arr = self.get_data(trainfile)
+        arr = self.__get_data(trainfile)
 
         # Get mutation positions
         self.mut_pos = find_mutation_pos(arr)
 
-        mut_arr, nomut_arr = self.split_data(arr=arr, mut_pos=self.mut_pos)
+        mut_arr, nomut_arr = self.__split_data(arr=arr, mut_pos=self.mut_pos)
+
+        print "debug"
 
         self.MutateClassifier.train(arr=mut_arr)
         self.NomutateClassifier.train(arr=nomut_arr)
 
     def test(self, testfile):
-        arr = self.get_data(testfile)
+        arr = self.__get_data(testfile)
 
-        mut_arr, nomut_arr = self.split_data(arr=arr, mut_pos=self.mut_pos)
+        mut_arr, nomut_arr = self.__split_data(arr=arr, mut_pos=self.mut_pos)
 
         p_mut = self.MutateClassifier.test(arr=mut_arr)
         p_nomut = self.NomutateClassifier.test(arr=nomut_arr)
 
-        p_dna = self.merge_predicted(p_mut, p_nomut, self.mut_pos)
+        p_dna = self.__merge_predicted(p_mut, p_nomut, self.mut_pos)
+        self.__model_evaluation(arr=arr, p_dna=p_dna)
 
-
-    def merge_predicted(self, p_mut, p_nomut, mut_pos):
-        mut_pos = sorted(mut_pos)   # to make sure
+    def __merge_predicted(self, p_mut, p_nomut, mut_pos):
+        '''
+        Merge mutation and nomutation array into 1
+        '''
+        mut_pos = sorted(mut_pos)   # to make sure positions in order
         def merge(mut, nomut):
             j=0
             for i in mut_pos:
                 nomut = nomut[:i]+mut[j]+nomut[i:]
                 j+=1
+            return nomut
         merged = map(merge, p_mut, p_nomut)
         return merged
 
-    def model_evaluation(self, arr, p_dna):
+    def __model_evaluation(self, arr, p_dna):
         # TODO calculate confusion matrix score
+        x_data, y_data = arr
 
-    def get_data(self, infile):
+        # print predicted data
+        print "\n".join(p_dna)
+        accuracy = calculate_accuracy(y_data, p_dna)
+        print 'Accuracy'
+        print accuracy
+
+    def __get_data(self, infile):
         '''Parse data to 2 arrays (i,e, mut and wt)'''
+        x_data, y_data = [], []
 
         with open(infile, 'rb') as f:
             csvreader = csv.reader(f)
-            x_data, y_data = [[x[i] for x in csvreader] for i in range(2)]
+            for line in csvreader:
+                x_data.append(line[0])
+                y_data.append(line[1])
 
         return x_data, y_data
 
-    def split_data(self, arr, mut_pos):
+    def __split_data(self, arr, mut_pos):
         x_data, y_data = arr
 
         def split_one(data):

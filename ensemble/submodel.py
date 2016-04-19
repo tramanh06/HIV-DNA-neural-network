@@ -4,7 +4,7 @@ import cPickle as pickle
 from pybrain.datasets.supervised import SupervisedDataSet as SDS
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
-from pybrain.structure import SigmoidLayer
+from pybrain.structure import TanhLayer, SigmoidLayer
 from pybrain.structure.modules   import SoftmaxLayer
 import numpy as np
 from utils import load_data, encoder
@@ -79,6 +79,8 @@ class SubModel:
         print 'Activating ds'
         p = net.activateOnDataset( ds )
 
+        p = std_scale.inverse_transform(p)  # Convert back to original scale
+
         dna = self.convert_to_dna(p)
 
         return dna
@@ -89,7 +91,8 @@ class SubModel:
         for seq in p:
             temp = ''
             for num in seq:
-                dist = [num-encoder[x] for x in encoder.keys()]
+                dist = [abs(num-encoder[x]) for x in encoder.keys()]
                 value = encoder.keys()[dist.index(min(dist))]
                 temp += value
             arr.append(temp)
+        return arr
