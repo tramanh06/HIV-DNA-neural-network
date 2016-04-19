@@ -31,6 +31,7 @@ class SubModel:
         x_train, y_train = load_data(arr)
         std_scale = preprocessing.StandardScaler().fit(x_train)
         x_train_scaled = std_scale.transform(x_train)     # Normalize to standard normal
+        y_train_scaled = std_scale.transform(y_train)
 
         input_size = x_train_scaled.shape[1]
         target_size = y_train.shape[1]
@@ -39,7 +40,7 @@ class SubModel:
 
         ds = SDS( input_size, target_size )
         ds.setField( 'input', x_train_scaled )
-        ds.setField( 'target', y_train )
+        ds.setField( 'target', y_train_scaled )
 
         # init and train
 

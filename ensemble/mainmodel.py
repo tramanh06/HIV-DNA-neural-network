@@ -10,7 +10,7 @@ class MainModel():
     def __init__(self, hiddennodes):
         self.hiddennodes = hiddennodes
         self.MutateClassifier = SubModel(hiddennodes=self.hiddennodes, type='mutate')
-        self.NomutateClassifier = SubModel(hiddennodes=self.hiddennodes, type='nomutate')
+        # self.NomutateClassifier = SubModel(hiddennodes=self.hiddennodes, type='nomutate')
 
     def train(self, trainfile):
         arr = self.__get_data(trainfile)
@@ -22,8 +22,8 @@ class MainModel():
 
         print "debug"
 
-        self.MutateClassifier.train(arr=mut_arr)
-        self.NomutateClassifier.train(arr=nomut_arr)
+        # self.MutateClassifier.train(arr=mut_arr)
+        # self.NomutateClassifier.train(arr=nomut_arr)
 
     def test(self, testfile):
         arr = self.__get_data(testfile)
@@ -31,10 +31,10 @@ class MainModel():
         mut_arr, nomut_arr = self.__split_data(arr=arr, mut_pos=self.mut_pos)
 
         p_mut = self.MutateClassifier.test(arr=mut_arr)
-        p_nomut = self.NomutateClassifier.test(arr=nomut_arr)
+        # p_nomut = self.NomutateClassifier.test(arr=nomut_arr)
 
-        p_dna = self.__merge_predicted(p_mut, p_nomut, self.mut_pos)
-        self.__model_evaluation(arr=arr, p_dna=p_dna)
+        # p_dna = self.__merge_predicted(p_mut, p_nomut, self.mut_pos)
+        self.__model_evaluation(arr=mut_arr, p_dna=p_mut)
 
     def __merge_predicted(self, p_mut, p_nomut, mut_pos):
         '''
