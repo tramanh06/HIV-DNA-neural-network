@@ -45,7 +45,7 @@ class SubModel:
         # init and train
 
         net = buildNetwork(input_size, self.hiddennodes, target_size, bias = True, hiddenclass=TanhLayer,
-                           outclass=SoftmaxLayer)
+                           outclass=TanhLayer)
         trainer = BackpropTrainer(net,ds)
 
         print 'Training..'

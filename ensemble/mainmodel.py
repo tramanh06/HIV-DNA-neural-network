@@ -2,9 +2,9 @@ __author__ = 'TramAnh'
 
 import csv
 from submodel import SubModel
-from utils import find_mutation_pos
-from utils import calculate_accuracy
+from utils import find_mutation_pos, calculate_accuracy, confusion_matrix
 import matplotlib.pyplot as plt
+import pandas as pd
 
 class MainModel():
 
@@ -23,7 +23,7 @@ class MainModel():
 
         print "debug"
 
-        # self.MutateClassifier.train(arr=mut_arr)
+        self.MutateClassifier.train(arr=mut_arr)
         # self.NomutateClassifier.train(arr=nomut_arr)
 
     def test(self, testfile):
@@ -34,8 +34,8 @@ class MainModel():
         p_mut = self.MutateClassifier.test(arr=mut_arr)
         # p_nomut = self.NomutateClassifier.test(arr=nomut_arr)
 
-        # p_dna = self.__merge_predicted(p_mut, p_nomut, self.mut_pos)
-        self.__model_evaluation(arr=mut_arr, p_dna=p_mut)
+        p_dna = self.__merge_predicted(p_mut, nomut_arr[1], self.mut_pos)   # Merge with the nomut_arr set aside
+        self.__model_evaluation(arr=arr, p_dna=p_dna)
 
     def __merge_predicted(self, p_mut, p_nomut, mut_pos):
         '''
@@ -52,17 +52,17 @@ class MainModel():
         return merged
 
     def __model_evaluation(self, arr, p_dna):
-        # TODO calculate confusion matrix score
         x_data, y_data = arr
 
+        df = confusion_matrix(wt=x_data, mt=y_data, predicted=p_dna)
+        outfile = 'summary.csv'
+        # df.to_csv(outfile)
+
         # print predicted data
-        print "\n".join(p_dna)
-        accuracy = calculate_accuracy(y_data, p_dna)
-        print 'Accuracy'
-        print accuracy
+        # print "\n".join(p_dna)
 
         'Show histogram'
-        plt.hist(accuracy, bins=20)
+        df['Accuracy'].hist(bins=20)
         plt.show()
 
     def __get_data(self, infile):
