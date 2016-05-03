@@ -4,6 +4,7 @@ import csv
 from submodel import SubModel
 from utils import find_mutation_pos
 from utils import calculate_accuracy
+import matplotlib.pyplot as plt
 
 class MainModel():
 
@@ -22,7 +23,7 @@ class MainModel():
 
         print "debug"
 
-        self.MutateClassifier.train(arr=mut_arr)
+        # self.MutateClassifier.train(arr=mut_arr)
         # self.NomutateClassifier.train(arr=nomut_arr)
 
     def test(self, testfile):
@@ -59,6 +60,10 @@ class MainModel():
         accuracy = calculate_accuracy(y_data, p_dna)
         print 'Accuracy'
         print accuracy
+
+        'Show histogram'
+        plt.hist(accuracy, bins=20)
+        plt.show()
 
     def __get_data(self, infile):
         '''Parse data to 2 arrays (i,e, mut and wt)'''

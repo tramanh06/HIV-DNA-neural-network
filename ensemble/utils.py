@@ -11,7 +11,7 @@ encoder = {'c': -1.0, 't': -0.5, 'a':0.5, 'g':1.0}
 
 def __find_mutations_each(seq1, seq2):
     assert (len(seq1)==len(seq2))
-    mut = {i for i in range(len(seq1)) if seq1[i]!=seq2[i]}     # set
+    mut = {i for i in range(len(seq1)) if seq1[i]!=seq2[i]}     # a set
     return mut
 
 def find_mutation_pos(arr):
@@ -29,6 +29,9 @@ def find_mutation_pos(arr):
 
 def load_data(arr):
     # [wt, mt] = arr      # wt and mt are list of sequence (in string)
+    '''
+    Convert array with actg to numbers
+    '''
 
     def convert(wt):
         x_matrix = []

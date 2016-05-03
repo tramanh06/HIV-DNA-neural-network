@@ -31,8 +31,7 @@ class SubModel:
         x_train, y_train = load_data(arr)
         std_scale = preprocessing.StandardScaler().fit(x_train)
         x_train_scaled = std_scale.transform(x_train)     # Normalize to standard normal
-        y_train_scaled = std_scale.transform(y_train)
-        y_train_inv = std_scale.inverse_transform(y_train_scaled)
+        # y_train_scaled = std_scale.transform(y_train)     # Try not scaling y
 
         input_size = x_train_scaled.shape[1]
         target_size = y_train.shape[1]
@@ -41,12 +40,12 @@ class SubModel:
 
         ds = SDS( input_size, target_size )
         ds.setField( 'input', x_train_scaled )
-        ds.setField( 'target', y_train_scaled )
+        ds.setField( 'target', y_train )
 
         # init and train
 
         net = buildNetwork(input_size, self.hiddennodes, target_size, bias = True, hiddenclass=TanhLayer,
-                           outclass=TanhLayer)
+                           outclass=SoftmaxLayer)
         trainer = BackpropTrainer(net,ds)
 
         print 'Training..'
@@ -80,7 +79,7 @@ class SubModel:
         # predict
         print 'Activating ds'
         p = net.activateOnDataset( ds )
-
+        print 'debug'
         ptest = preprocessing.StandardScaler().fit_transform(p)
 
         p_scaled = std_scale.inverse_transform(ptest)  # Convert back to original scale
