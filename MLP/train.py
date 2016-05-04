@@ -70,14 +70,6 @@ def train_fn(trainfile, hiddennodes):
     input_size = x_train.shape[1]
     target_size = y_train.shape[1]
 
-    # Normalize
-    # x_train = x_train /4.0
-    # y_train = y_train /4.0
-
-    # print 'in train.py'
-    # print x_train
-    # print y_train
-
     # prepare dataset
 
     ds = SDS( input_size, target_size )
