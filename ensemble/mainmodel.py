@@ -23,7 +23,7 @@ class MainModel():
 
         print "debug"
 
-        self.MutateClassifier.train(arr=mut_arr)
+        # self.MutateClassifier.train(arr=mut_arr)
         # self.NomutateClassifier.train(arr=nomut_arr)
 
     def test(self, testfile):
@@ -36,6 +36,7 @@ class MainModel():
 
         p_dna = self.__merge_predicted(p_mut, nomut_arr[1], self.mut_pos)   # Merge with the nomut_arr set aside
         self.__model_evaluation(arr=arr, p_dna=p_dna)
+        return calculate_accuracy(arr[1],p_dna)
 
     def __merge_predicted(self, p_mut, p_nomut, mut_pos):
         '''
@@ -55,11 +56,8 @@ class MainModel():
         x_data, y_data = arr
 
         df = confusion_matrix(wt=x_data, mt=y_data, predicted=p_dna)
-        outfile = 'summary.csv'
-        # df.to_csv(outfile)
-
-        # print predicted data
-        # print "\n".join(p_dna)
+        outfile = 'summary_6nodes_nopostproc.csv'
+        df.to_csv(outfile)
 
         'Show histogram'
         df['Accuracy'].hist(bins=20)

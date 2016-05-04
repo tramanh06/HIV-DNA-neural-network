@@ -80,11 +80,10 @@ class SubModel:
         print 'Activating ds'
         p = net.activateOnDataset( ds )
         print 'debug'
-        ptest = preprocessing.StandardScaler().fit_transform(p)
+        # ptest = preprocessing.StandardScaler().fit_transform(p)
+        # p_scaled = std_scale.inverse_transform(ptest)  # Convert back to original scale
 
-        p_scaled = std_scale.inverse_transform(ptest)  # Convert back to original scale
-
-        dna = self.convert_to_dna(p_scaled)
+        dna = self.convert_to_dna(p)
 
         return dna
 
