@@ -1,6 +1,7 @@
 __author__ = 'TramAnh'
 
 import csv
+import sys, getopt
 
 def get_sequences(filename, arr):
     with open(filename, 'rb') as f:
@@ -16,16 +17,28 @@ def write_fasta(outfile, arr):
             f.write('>{0}M\n'.format(i))
             f.write(line[1].strip()+'\n')
 
-# trainfile = 'Data/train_cleaned.csv'
-# testfile = 'Data/test_cleaned.csv'
-file = '../Data/wobble_data/trainvaltest.csv'
-outfile = '../Data/wobble_data/fasta_4alignment.txt'
+def main(argv):
+    file = '../Data/wobble_data/trainvaltest.csv'
+    outfile = '../Data/wobble_data/fasta_4alignment.txt'
 
-arr=[]
-# get_sequences(trainfile, arr)
-get_sequences(file, arr)
+    try:
+        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+    except getopt.GetoptError:
+        print 'transform_wobble.py -i <inputfile> -o <outputfile>'
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'transform_wobble.py -i <inputfile> -o <outputfile>'
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            file = arg
+        elif opt in ("-o", "--ofile"):
+            outfile = arg
 
-write_fasta(outfile, arr)
+    arr=[]
+    get_sequences(file, arr)
+    write_fasta(outfile, arr)
 
-
+if __name__=='__main__':
+    main(sys.argv[1:])
 

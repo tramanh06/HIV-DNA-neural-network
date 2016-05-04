@@ -2,6 +2,7 @@ __author__ = 'TramAnh'
 
 import csv
 import random
+import sys, getopt
 
 wobble_base = {}
 wobble_base['b']= ('t') #('c', 'g', 't')       # t
@@ -30,18 +31,37 @@ def convert(sequence):
             # print 'convert %s to %s' %(char, new)
     return temp
 
-with open('../Data/trainvaltest.csv','rb') as f:
-    arr = []
-    csvreader = csv.reader(f)
-    for line in csvreader:
-        if 'seq_ND' in line:
-            continue
-        string1 = convert(line[0])
-        string2 = convert(line[1])
-        arr.append([string1, string2])
+def main(argv):
+    inputfile = '../Data/trainvaltest.csv'
+    outputfile = '../Data/wobble_data/trainvaltest.csv'
+    try:
+        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+    except getopt.GetoptError:
+        print 'transform_wobble.py -i <inputfile> -o <outputfile>'
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'transform_wobble.py -i <inputfile> -o <outputfile>'
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            inputfile = arg
+        elif opt in ("-o", "--ofile"):
+            outputfile = arg
 
-# write to file
-with open('../Data/wobble_data/trainvaltest.csv', 'wb') as writef:
-    csvwriter = csv.writer(writef)
-    csvwriter.writerows(arr)
+    with open(inputfile,'rb') as f:
+        arr = []
+        csvreader = csv.reader(f)
+        for line in csvreader:
+            if 'seq_ND' in line:
+                continue
+            string1 = convert(line[0])
+            string2 = convert(line[1])
+            arr.append([string1, string2])
 
+    # write to file
+    with open(outputfile, 'wb') as writef:
+        csvwriter = csv.writer(writef)
+        csvwriter.writerows(arr)
+
+if __name__=='__main__':
+    main(sys.argv[1:])

@@ -9,9 +9,7 @@ All data in output are of same length, and aligned
 
 import csv
 from utils import put_seq_to_array
-
-infile = '../Data/wobble_data/fasta_output.txt'
-csv_file = '../Data/wobble_data/trainval_aligned.csv'
+import sys, getopt
 
 def get_sequence(infile, dict):
     with open(infile, 'rb') as f:
@@ -60,7 +58,7 @@ def get_rcut_position(dict):
 
     return seq_name, rcut
 
-def write_arr_to_csv(arr, lcut, rcut):
+def write_arr_to_csv(arr, lcut, rcut, csv_file):
     with open(csv_file, 'wb') as f:
         csvwriter = csv.writer(f)
         for each in arr:
@@ -68,20 +66,40 @@ def write_arr_to_csv(arr, lcut, rcut):
             m = each[1][lcut+1:rcut]
             csvwriter.writerow([wt, m])
 
+def main(argv):
+    infile = '../Data/wobble_data/fasta_output.txt'
+    csv_file = '../Data/wobble_data/trainval_aligned.csv'
 
-dict= {}
-get_sequence(infile, dict)
+    try:
+        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+    except getopt.GetoptError:
+        print 'transform_wobble.py -i <inputfile> -o <outputfile>'
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'transform_wobble.py -i <inputfile> -o <outputfile>'
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            infile = arg
+            print 'infile={0}'.format(arg)
+        elif opt in ("-o", "--ofile"):
+            csv_file = arg
+            print 'outfile={0}'.format(arg)
 
-arr = put_seq_to_array(infile)
+    dict= {}
+    get_sequence(infile, dict)
 
-print 'Cut left:'
-seq1, l_cut = get_lcut_position(dict)  # Return ['key', pos] => only consider the position
-print seq1, l_cut
+    arr = put_seq_to_array(infile)
 
-print '\nCut right:'
-seq2, r_cut = get_rcut_position(dict)
-print seq2, r_cut
+    print 'Cut left:'
+    seq1, l_cut = get_lcut_position(dict)  # Return ['key', pos] => only consider the position
+    print seq1, l_cut
 
-write_arr_to_csv(arr, l_cut, r_cut)
+    print '\nCut right:'
+    seq2, r_cut = get_rcut_position(dict)
+    print seq2, r_cut
 
+    write_arr_to_csv(arr, l_cut, r_cut, csv_file)
 
+if __name__=='__main__':
+    main(sys.argv[1:])
