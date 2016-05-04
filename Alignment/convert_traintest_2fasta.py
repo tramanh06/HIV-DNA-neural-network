@@ -32,8 +32,10 @@ def main(argv):
             sys.exit()
         elif opt in ("-i", "--ifile"):
             file = arg
+            print 'inputfile={0}'.format(arg)
         elif opt in ("-o", "--ofile"):
             outfile = arg
+            print 'outputfile={0}'.format(arg)
 
     arr=[]
     get_sequences(file, arr)

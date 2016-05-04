@@ -14,7 +14,7 @@ def load_data(infile):
     return arr
 
 def main(argv):
-    infile = '../Data/wobble_data/trainval_aligned.csv'
+    infile = '' #'../Data/wobble_data/trainval_aligned.csv'
     trainfile = ''
     testfile = ''
     try:

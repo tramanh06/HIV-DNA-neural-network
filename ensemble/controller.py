@@ -18,6 +18,7 @@ def mapper(hiddennodes):
     model.train(trainfile=trainfile)
     print 'Testing..'
     score = model.test(testfile=testfile)
+    print score
     return hiddennodes, score
 
 def main():
@@ -40,7 +41,7 @@ if __name__=='__main__':
     testfile=''
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hr:e:",["ifile=","trainfile=","testfile="])
+        opts, args = getopt.getopt(sys.argv[1:],"hr:e:",["trainfile=","testfile="])
     except getopt.GetoptError:
         print 'trainval_split.py -i <inputfile> -r <trainfile> -e <testfile>'
         sys.exit(2)

@@ -67,8 +67,8 @@ def write_arr_to_csv(arr, lcut, rcut, csv_file):
             csvwriter.writerow([wt, m])
 
 def main(argv):
-    infile = '../Data/wobble_data/fasta_output.txt'
-    csv_file = '../Data/wobble_data/trainval_aligned.csv'
+    infile = '' #'../Data/wobble_data/fasta_output.txt'
+    csv_file = ''   #'../Data/wobble_data/trainval_aligned.csv'
 
     try:
         opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])

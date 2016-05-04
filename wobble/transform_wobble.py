@@ -32,8 +32,8 @@ def convert(sequence):
     return temp
 
 def main(argv):
-    inputfile = '../Data/trainvaltest.csv'
-    outputfile = '../Data/wobble_data/trainvaltest.csv'
+    inputfile = ''  #'../Data/trainvaltest.csv'
+    outputfile = '' #'../Data/wobble_data/trainvaltest.csv'
     try:
         opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
     except getopt.GetoptError:
@@ -45,8 +45,11 @@ def main(argv):
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
+            print 'inputfile={0}'.format(arg)
         elif opt in ("-o", "--ofile"):
             outputfile = arg
+            print 'outputfile={0}'.format(arg)
+
 
     with open(inputfile,'rb') as f:
         arr = []
