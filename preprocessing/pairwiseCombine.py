@@ -5,6 +5,7 @@ import numpy as np
 import csv
 import cPickle as pickle
 
+'''Process raw file from standforddb and take out sequence and drugs'''
 # Read in PR.txt
 f = open('../PR.txt', 'r')
 flag = False

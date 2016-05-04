@@ -23,7 +23,7 @@ def dna_to_aa(sequence):
 
 def confusion_matrix(wt, mt, predicted):
     '''
-    Take in wildtype, mutant and predicted sequence.
+    Take in a wildtype, mutant and predicted sequence.
     String type.
     Compute a confusion matrix of
                 predicted
@@ -75,7 +75,6 @@ def confusion_matrix(wt, mt, predicted):
         fp = fp/float(num_nochange)
     except ZeroDivisionError:
         tn, fp = [0] * 2
-
 
     return tp, fn1, fn2, tn, fp
 
