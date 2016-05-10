@@ -2,7 +2,7 @@ __author__ = 'TramAnh'
 
 import csv
 from submodel import SubModel
-from utils import find_mutation_pos, calculate_accuracy, confusion_matrix
+from utils import find_mutation_pos, calculate_accuracy, confusion_matrix, dna_to_aa
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -23,7 +23,7 @@ class MainModel():
 
         print "debug"
 
-        self.MutateClassifier.train(arr=mut_arr)
+        # self.MutateClassifier.train(arr=mut_arr)
         # self.NomutateClassifier.train(arr=nomut_arr)
 
     def test(self, testfile):
@@ -53,14 +53,24 @@ class MainModel():
         return merged
 
     def __model_evaluation(self, arr, p_dna):
-        x_data, y_data = arr
+        wt_data, mt_data = arr
+        df_dna = confusion_matrix(wt=wt_data, mt=mt_data, predicted=p_dna)
 
-        df = confusion_matrix(wt=x_data, mt=y_data, predicted=p_dna)
+        'Convert to amino acid'
+        wt_aa = map(dna_to_aa, wt_data)
+        mt_aa = map(dna_to_aa, mt_data)
+        p_aa = map(dna_to_aa, p_dna)
+        df_aa = confusion_matrix(wt=wt_aa, mt=mt_aa, predicted=p_aa)
+        # df_aa[df_aa['#Mutate Positions'] != 0]['TP'].hist(bins=20)
+
+        df = pd.concat([df_dna, df_aa], axis=1)
+
         outfile = 'summary_6nodes_nopostproc.csv'
         df.to_csv(outfile)
 
         'Show histogram'
         df['Accuracy'].hist(bins=20)
+        df['TP'].hist(bins=20)
         plt.show()
 
     def __get_data(self, infile):

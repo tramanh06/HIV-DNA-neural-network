@@ -23,23 +23,24 @@ def mapper(hiddennodes):
 
 def main():
     # Parallel run
-    plt.figure(1)
-    pool = Pool(4)
-    out= pool.map(mapper, range(3,7))
-
-    for i in out:
-        nodes = i[0]
-        plot_histogram(i[1], nodes)
-
-    plt.show()
+    # plt.figure(1)
+    # pool = Pool(4)
+    # out= pool.map(mapper, range(3,7))
+    #
+    # for i in out:
+    #     nodes = i[0]
+    #     plot_histogram(i[1], nodes)
+    #
+    # plt.show()
 
     # Single run
-    # mapper(6)
+    mapper(6)
 
 if __name__=='__main__':
-    trainfile=''
-    testfile=''
+    trainfile='../Data/wobble_data/train_aligned.csv'
+    testfile='../Data/wobble_data/test_aligned.csv'
 
+    'For arguments in shell script'
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hr:e:",["trainfile=","testfile="])
     except getopt.GetoptError:
@@ -55,3 +56,5 @@ if __name__=='__main__':
         elif opt in ("-e", "--testfile"):
             testfile = arg
             print 'testfile={0}'.format(arg)
+
+    main()
