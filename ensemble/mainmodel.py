@@ -61,7 +61,6 @@ class MainModel():
         mt_aa = map(dna_to_aa, mt_data)
         p_aa = map(dna_to_aa, p_dna)
         df_aa = confusion_matrix(wt=wt_aa, mt=mt_aa, predicted=p_aa)
-        # df_aa[df_aa['#Mutate Positions'] != 0]['TP'].hist(bins=20)
 
         df = pd.concat([df_dna, df_aa], axis=1)
 
@@ -71,6 +70,7 @@ class MainModel():
         'Show histogram'
         df['Accuracy'].hist(bins=20)
         df['TP'].hist(bins=20)
+        df['#Mutate Positions'].hist(bins=20)
         plt.show()
 
     def __get_data(self, infile):
